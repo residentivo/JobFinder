@@ -1,0 +1,81 @@
+id,nome,stack,localizacao_cidade,localizacao_estado,nivel,modalidade,salario,empresa
+1,Desenvolvedor Backend,Java,São Paulo,SP,junior,remoto,4500,TechNova
+2,Desenvolvedor Backend,Java,São Paulo,SP,pleno,remoto,8000,TechNova
+3,Desenvolvedor Backend,Java,São Paulo,SP,senior,remoto,14000,TechNova
+4,Engenheiro de Software,Java,São Paulo,SP,pleno,presencial,9000,TechNova
+5,Analista de Sistemas,Java,São Paulo,SP,senior,presencial,13000,TechNova
+6,Desenvolvedor Frontend,React,São Paulo,SP,junior,remoto,4000,TechNova
+7,Desenvolvedor Frontend,React,São Paulo,SP,pleno,remoto,8500,TechNova
+8,Desenvolvedor Frontend,React,São Paulo,SP,senior,remoto,15000,TechNova
+9,Engenheiro Frontend,React,São Paulo,SP,pleno,presencial,9500,TechNova
+10,Desenvolvedor Full Stack,Node.js,São Paulo,SP,pleno,remoto,10000,TechNova
+11,Desenvolvedor Full Stack,Node.js,São Paulo,SP,senior,remoto,16000,TechNova
+12,Desenvolvedor Backend,Python,São Paulo,SP,junior,presencial,5000,DataMinds
+13,Cientista de Dados,Python,São Paulo,SP,senior,remoto,18000,DataMinds
+14,Engenheiro de Dados,Python,São Paulo,SP,pleno,remoto,12000,DataMinds
+15,Desenvolvedor Backend,Python,São Paulo,SP,pleno,presencial,11000,DataMinds
+16,Desenvolvedor Backend,Java,Rio de Janeiro,RJ,junior,presencial,4200,CodeRio
+17,Desenvolvedor Backend,Java,Rio de Janeiro,RJ,pleno,presencial,8200,CodeRio
+18,Desenvolvedor Backend,Java,Rio de Janeiro,RJ,senior,remoto,14500,CodeRio
+19,Desenvolvedor Frontend,React,Rio de Janeiro,RJ,pleno,remoto,8800,CodeRio
+20,Desenvolvedor Frontend,React,Rio de Janeiro,RJ,senior,remoto,15500,CodeRio
+21,Desenvolvedor Full Stack,Node.js,Rio de Janeiro,RJ,junior,presencial,4600,CodeRio
+22,Desenvolvedor Full Stack,Node.js,Rio de Janeiro,RJ,senior,remoto,16500,CodeRio
+23,Engenheiro DevOps,Kubernetes,Rio de Janeiro,RJ,senior,remoto,17000,CloudBridge
+24,Engenheiro DevOps,Kubernetes,Rio de Janeiro,RJ,pleno,remoto,12500,CloudBridge
+25,Desenvolvedor Backend,Python,Rio de Janeiro,RJ,pleno,presencial,11500,CloudBridge
+26,Desenvolvedor Mobile,Flutter,Belo Horizonte,MG,junior,remoto,4300,MobileMine
+27,Desenvolvedor Mobile,Flutter,Belo Horizonte,MG,pleno,remoto,8700,MobileMine
+28,Desenvolvedor Mobile,Flutter,Belo Horizonte,MG,senior,remoto,14800,MobileMine
+29,Desenvolvedor Backend,Java,Belo Horizonte,MG,pleno,presencial,8300,MobileMine
+30,Desenvolvedor Backend,Java,Belo Horizonte,MG,senior,presencial,13500,MobileMine
+31,Engenheiro de Dados,Python,Belo Horizonte,MG,senior,remoto,17500,DataMinds
+32,Desenvolvedor Frontend,React,Belo Horizonte,MG,junior,remoto,4100,MobileMine
+33,Desenvolvedor Frontend,React,Belo Horizonte,MG,pleno,remoto,8600,MobileMine
+34,Desenvolvedor Full Stack,Node.js,Belo Horizonte,MG,pleno,presencial,9800,MobileMine
+35,Engenheiro DevOps,Kubernetes,Belo Horizonte,MG,pleno,remoto,12000,CloudBridge
+36,Desenvolvedor Backend,Java,Curitiba,PR,junior,remoto,4400,SulTech
+37,Desenvolvedor Backend,Java,Curitiba,PR,pleno,remoto,8100,SulTech
+38,Desenvolvedor Backend,Java,Curitiba,PR,senior,remoto,14200,SulTech
+39,Desenvolvedor Frontend,React,Curitiba,PR,pleno,remoto,8400,SulTech
+40,Desenvolvedor Frontend,React,Curitiba,PR,senior,remoto,15200,SulTech
+41,Desenvolvedor Mobile,Flutter,Curitiba,PR,pleno,remoto,8900,SulTech
+42,Desenvolvedor Mobile,Flutter,Curitiba,PR,senior,remoto,15000,SulTech
+43,Cientista de Dados,Python,Curitiba,PR,pleno,remoto,12500,DataMinds
+44,Cientista de Dados,Python,Curitiba,PR,senior,remoto,18200,DataMinds
+45,Engenheiro de Dados,Python,Curitiba,PR,pleno,presencial,11800,DataMinds
+46,Desenvolvedor Backend,Python,Porto Alegre,RS,junior,remoto,4700,SulTech
+47,Desenvolvedor Backend,Python,Porto Alegre,RS,pleno,remoto,11200,SulTech
+48,Desenvolvedor Backend,Python,Porto Alegre,RS,senior,remoto,16800,SulTech
+49,Desenvolvedor Full Stack,Node.js,Porto Alegre,RS,junior,remoto,4900,CodeRio
+50,Desenvolvedor Full Stack,Node.js,Porto Alegre,RS,pleno,remoto,10200,CodeRio
+51,Desenvolvedor Full Stack,Node.js,Porto Alegre,RS,senior,remoto,16200,CodeRio
+52,Engenheiro DevOps,Kubernetes,Porto Alegre,RS,junior,presencial,5200,CloudBridge
+53,Engenheiro DevOps,Kubernetes,Porto Alegre,RS,senior,remoto,17200,CloudBridge
+54,Desenvolvedor Frontend,React,Porto Alegre,RS,senior,presencial,15000,TechNova
+55,Analista de Sistemas,Java,Porto Alegre,RS,pleno,presencial,8800,TechNova
+56,Desenvolvedor Backend,Java,Recife,PE,junior,presencial,4000,NordesteDev
+57,Desenvolvedor Backend,Java,Recife,PE,pleno,remoto,7900,NordesteDev
+58,Desenvolvedor Backend,Java,Recife,PE,senior,remoto,13800,NordesteDev
+59,Desenvolvedor Mobile,Flutter,Recife,PE,junior,remoto,4200,NordesteDev
+60,Desenvolvedor Mobile,Flutter,Recife,PE,pleno,presencial,8600,NordesteDev
+61,Engenheiro de Dados,Python,Recife,PE,pleno,remoto,11900,DataMinds
+62,Engenheiro de Dados,Python,Recife,PE,senior,presencial,17400,DataMinds
+63,Cientista de Dados,Python,Recife,PE,junior,remoto,5500,DataMinds
+64,Desenvolvedor Frontend,React,Recife,PE,pleno,presencial,8300,NordesteDev
+65,Desenvolvedor Full Stack,Node.js,Recife,PE,senior,remoto,15800,NordesteDev
+66,Desenvolvedor Backend,Python,Florianópolis,SC,junior,remoto,4800,SulTech
+67,Desenvolvedor Backend,Python,Florianópolis,SC,pleno,remoto,11300,SulTech
+68,Desenvolvedor Backend,Python,Florianópolis,SC,senior,remoto,16900,SulTech
+69,Desenvolvedor Frontend,React,Florianópolis,SC,junior,presencial,4050,SulTech
+70,Engenheiro DevOps,Kubernetes,Florianópolis,SC,pleno,remoto,12300,CloudBridge
+71,Engenheiro DevOps,Kubernetes,Florianópolis,SC,senior,remoto,17100,CloudBridge
+72,Desenvolvedor Mobile,Flutter,Florianópolis,SC,senior,remoto,14900,MobileMine
+73,Analista de Sistemas,Java,Florianópolis,SC,junior,presencial,4100,SulTech
+74,Desenvolvedor Full Stack,Node.js,Florianópolis,SC,pleno,remoto,10100,SulTech
+75,Cientista de Dados,Python,Florianópolis,SC,pleno,remoto,12700,DataMinds
+76,Desenvolvedor Backend,Java,Brasília,DF,pleno,presencial,8600,TechNova
+77,Desenvolvedor Backend,Java,Brasília,DF,senior,presencial,14000,TechNova
+78,Desenvolvedor Frontend,React,Brasília,DF,junior,remoto,4150,TechNova
+79,Desenvolvedor Full Stack,Node.js,Brasília,DF,senior,remoto,15900,CodeRio
+80,Engenheiro DevOps,Kubernetes,Brasília,DF,junior,presencial,5100,CloudBridge
