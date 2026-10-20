@@ -16,7 +16,7 @@ class ElasticVagaRepository(VagaRepository):
     def __init__(self, client: AsyncElasticsearch):
         self._client = client
 
-    async def buscar(self, termo: str, salario_minimo: float = None,salario_maximo: float = None,page: int = 1, total: int = 20) -> tuple[List[Vaga], int]:
+    async def buscar(self, termo: str, salario_minimo: float = None,salario_maximo: float = None,page: int = 1, total: int = 20, sort: str = None, order: str = None) -> tuple[List[Vaga], int]:
         
         campos = ["nome", "empresa", "stack", "localizacao_cidade", "localizacao_estado","nivel", "modalidade"]
         termos = termo.split()
@@ -34,19 +34,23 @@ class ElasticVagaRepository(VagaRepository):
                 }
             })
 
-        if not termo or not termo.strip():
-            query = {
-                "match_all": {},
-                "filter": []
-            }
-        else:
-            query = {
+        query = {
+            "query": {
                 "bool": {
                     "must": must,
-                    "filter": [] 
-                }
-            }
-
+                    "filter": []
+                }               
+            },
+            "sort": []
+        }
+                
+        if (order or "").lower() not in ["asc", "desc"]:
+            order = "asc"  
+            
+        palavras = ["stack", "nivel", "modalidade", "salario", "localizacao"]
+        if sort in palavras:        
+            query["sort"] = [{sort: {"order": order}}]
+        
         if salario_minimo is not None or salario_maximo is not None:
             salary_range = {}
             if salario_minimo is not None:
@@ -56,9 +60,11 @@ class ElasticVagaRepository(VagaRepository):
 
             query["bool"]["filter"].append({"range": {"salario": salary_range}})
 
+        print(f"Query being sent to Elasticsearch: {query}")    
+
         response = await self._client.search(
             index=self.INDEX_NAME,
-            query=query,
+            body=query,            
             size=total,
             from_=(page - 1) * total
         )

@@ -7,9 +7,12 @@ import { fetchSuggestions } from "@/lib/api";
 interface SearchFormProps {
   onSearch: (params: { q: string; sm: string; sx: string; total: number }) => void;
   isLoading: boolean;
+  currentSort?: string;       
+  currentOrder?: "asc" | "desc";      
+  onSortChange: (sort: string) => void;  
 }
 
-export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
+export function SearchForm({ onSearch, isLoading, currentSort, currentOrder, onSortChange }: SearchFormProps) {
   const [q, setQ] = useState("");
   const [sm, setSm] = useState("");
   const [sx, setSx] = useState("");
@@ -20,8 +23,14 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-  // Efeito para fechar o dropdown ao clicar fora
+  const sortOptions = [
+    { label: "Stack", value: "stack" },
+    { label: "Nível", value: "nivel" },
+    { label: "Modalidade", value: "modalidade" },
+    { label: "Salário", value: "salario" },
+    { label: "Localidade", value: "localizacao" },
+  ];
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -63,7 +72,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActiveSuggestionIndex((prev) => 
+      setActiveSuggestionIndex((prev) =>
         prev < suggestions.length - 1 ? prev + 1 : prev
       );
     } else if (e.key === "ArrowUp") {
@@ -89,10 +98,18 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
     onSearch({ q: suggestion, sm, sx, total });
   };
 
+  const handleTotalChange = (newTotal: number) => {
+    setTotal(newTotal);
+    
+    // Se já houver um termo de busca, dispara a busca imediatamente
+    if (q.trim()) {
+      onSearch({ q, sm, sx, total: newTotal });
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mb-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      
-      {/* Campo de Busca com Autocomplete */}
+
       <div className="relative w-full" ref={wrapperRef}>
         <svg
           className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
@@ -118,8 +135,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
           required
           className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-12 pr-4 text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200"
         />
-
-        {/* Dropdown de Sugestões */}
+        
         {showSuggestions && suggestions.length > 0 && (
           <ul className="absolute z-10 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-slate-200 bg-white py-2 shadow-lg">
             {suggestions.map((suggestion, index) => (
@@ -127,9 +143,8 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                 key={index}
                 onClick={() => handleSelectSuggestion(suggestion)}
                 onMouseEnter={() => setActiveSuggestionIndex(index)}
-                className={`cursor-pointer px-4 py-2 text-sm text-slate-700 transition ${
-                  index === activeSuggestionIndex ? "bg-indigo-50 text-indigo-700" : "hover:bg-slate-50"
-                }`}
+                className={`cursor-pointer px-4 py-2 text-sm text-slate-700 transition ${index === activeSuggestionIndex ? "bg-indigo-50 text-indigo-700" : "hover:bg-slate-50"
+                  }`}
               >
                 {suggestion}
               </li>
@@ -138,7 +153,47 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
         )}
       </div>
 
-      {/* Filtros de Salário e Botão */}
+      <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+        <span className="text-sm font-medium text-slate-600 mr-1">Ordenar por:</span>
+        {sortOptions.map((option) => {
+          const isActive = currentSort === option.value;
+          
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onSortChange(option.value)}
+              className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              {option.label}
+              
+              {/* Seta de Ordenação */}
+              {isActive && (
+                <svg
+                  className={`h-3 w-3 transition-transform duration-200 ${
+                    currentOrder === "desc" ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 15l7-7 7 7"
+                  />
+                </svg>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
         <div className="flex flex-1 gap-4">
           <div className="flex-1">
@@ -167,7 +222,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
           <label className="mb-1 block text-sm font-medium text-slate-600">Itens por pág.</label>
           <select
             value={total}
-            onChange={(e) => setTotal(Number(e.target.value))}
+            onChange={(e) => handleTotalChange(Number(e.target.value))}
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-slate-800 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200"
           >
             <option value={5}>5</option>

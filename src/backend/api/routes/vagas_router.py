@@ -31,13 +31,15 @@ async def buscar_vagas(
     sx: float = Query(None, description="Salário máximo"),
     page: int = Query(1, ge=1, description="Número da página"),
     total: int = Query(20, ge=1, le=100, description="Total de resultados por página"),
+    sort: str = Query(None, description="Critério de ordenação"),
+    order: str = Query(None, description="Ordem de ordenação: 'asc' ou 'desc'"),
     service: VagaService = Depends(get_vagas_service),
 ):
     try:
-        vagas = await service.pesquisar(q, salario_minimo=sm, salario_maximo=sx, page=page, total=total)
+        vagas = await service.pesquisar(q, salario_minimo=sm, salario_maximo=sx, page=page, total=total, sort=sort, order=order)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
     return [
         VagaResponse(vagas=[
             VagaResponseItem(id=v.id, 

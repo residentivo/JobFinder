@@ -9,19 +9,20 @@ import { SearchForm } from "@/components/SearchForm";
 export default function Home() {
   const [jobs, setJobs] = useState<ApiJob[]>([]);
   const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
-  // Estado dos filtros e paginação (inicia com total=5)
   const [params, setParams] = useState({
     q: "",
     sm: undefined as number | undefined,
     sx: undefined as number | undefined,
     page: 1,
-    total: 5, // <-- Novo parâmetro inicial
+    total: 5, 
+    sort: undefined as string | undefined,
+    order:  "asc" as "asc" | "desc" | undefined, 
   });
 
-  // Função para carregar os dados
   const loadJobs = useCallback(async () => {
     setIsLoading(true);
     setError("");
@@ -31,7 +32,9 @@ export default function Home() {
         sm: params.sm,
         sx: params.sx,
         page: params.page,
-        total: params.total, // <-- Envia o total para a API
+        total: params.total, 
+        sort: params.sort,
+        order: params.order,
       });
       setJobs(data.vagas || []);
       setTotal(data.total || 0);
@@ -43,24 +46,55 @@ export default function Home() {
     }
   }, [params]);
 
-  // Carrega na primeira renderização e sempre que os parâmetros mudarem
   useEffect(() => {
-    loadJobs();
-  }, [loadJobs]);
+    if (hasSearched) {
+      loadJobs();
+    }
+  }, [loadJobs, hasSearched]);
 
-  // Lida com a submissão do formulário de busca
   const handleSearch = (searchData: { q: string; sm: string; sx: string; total: number }) => {
     setParams({
       q: searchData.q,
       sm: searchData.sm ? Number(searchData.sm) : undefined,
       sx: searchData.sx ? Number(searchData.sx) : undefined,
-      page: 1, // Sempre volta para a página 1 ao buscar
-      total: searchData.total, // <-- Salva o total escolhido
+      page: 1, 
+      total: searchData.total, 
+      sort: params.sort,
+      order: params.order,
     });
+    setHasSearched(true);
   };
 
-  // O total de páginas agora usa o 'params.total' (itens por página)
   const totalPages = Math.ceil(total / params.total);
+
+  const handleSortChange = (newSort: string) => {
+
+    const nextSort = params.sort === newSort ? undefined : newSort;
+    
+    setParams((prev) => {
+      // Se clicou no mesmo botão, inverte a ordem
+      if (prev.sort === newSort) {
+        return {
+          ...prev,
+          order: prev.order === "asc" ? "desc" : "asc",
+          page: 1,
+        };
+      }
+      
+      // Se clicou em um botão diferente, define o novo sort e força "asc"
+      return {
+        ...prev,
+        sort: newSort,
+        order: "asc",
+        page: 1,
+      };
+    });
+
+    if (params.q.trim()) {
+      setHasSearched(true);
+    }
+  };
+
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
@@ -77,8 +111,8 @@ export default function Home() {
         </header>
 
         {/* Formulário de Busca */}
-        <SearchForm onSearch={handleSearch} isLoading={isLoading} />
-
+        <SearchForm onSearch={handleSearch} isLoading={isLoading} currentSort={params.sort} currentOrder={params.order} onSortChange={handleSortChange} />
+        
         {/* Resultados */}
         <div className="space-y-4">
           <p className="text-sm text-slate-600">
@@ -100,6 +134,7 @@ export default function Home() {
             jobs.map((job) => <JobCard key={job.id} job={job} />)}
         </div>
 
+
         {/* Paginação */}
         {!isLoading && totalPages > 1 && (
           <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-6">
@@ -114,7 +149,9 @@ export default function Home() {
               Página {params.page} de {totalPages}
             </span>
             <button
-              onClick={() => setParams((prev) => ({ ...prev, page: Math.min(totalPages, prev.page + 1) }))}
+              onClick={() =>{ 
+                setParams((prev) => ({ ...prev, page: Math.min(totalPages, prev.page + 1) }));                
+            }}
               disabled={params.page === totalPages}
               className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-50"
             >
