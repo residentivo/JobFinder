@@ -60,8 +60,6 @@ class ElasticVagaRepository(VagaRepository):
 
             query["bool"]["filter"].append({"range": {"salario": salary_range}})
 
-        print(f"Query being sent to Elasticsearch: {query}")    
-
         response = await self._client.search(
             index=self.INDEX_NAME,
             body=query,            
