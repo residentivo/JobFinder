@@ -1,16 +1,15 @@
 from dataclasses import dataclass
 from typing import List
-from uuid import UUID
 
 @dataclass(frozen=True)
 class Vaga:
     """Entidade de domínio representando uma vaga."""
-    id: UUID
+    id: float
     empresa: str
     nome: str
-    stack: List[str]
+    stack: str
     localizacao_cidade: str
     localizacao_estado: str
     nivel: str
-    remoto: bool
+    modalidade: str
     salario: float

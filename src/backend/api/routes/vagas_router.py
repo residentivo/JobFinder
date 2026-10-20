@@ -1,5 +1,4 @@
 from typing import List
-from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
@@ -10,30 +9,46 @@ from api.dependencies import  get_vagas_service
 
 router = APIRouter(prefix="/api/vagas", tags=["vagas"])
 
-
-class VagaResponse(BaseModel):
-    id: UUID
+class VagaResponseItem(BaseModel):
+    id: float
     empresa: str
     nome: str
-    stack: List[str]
+    stack: str
     localizacao_cidade: str
     localizacao_estado: str
     nivel: str
-    remoto: bool
+    modalidade: str
     salario: float
-
+    
+class VagaResponse(BaseModel):
+    vagas: List[VagaResponseItem]
+    total: int
 
 @router.get("/buscar", response_model=List[VagaResponse])
 async def buscar_vagas(
-    q: str = Query(..., min_length=1, description="Termo de busca"),
+    q: str = Query(None, min_length=1, description="Termo de busca"),
+    sm: float = Query(None, description="Salário mínimo"),
+    sx: float = Query(None, description="Salário máximo"),
+    page: int = Query(1, ge=1, description="Número da página"),
+    total: int = Query(20, ge=1, le=100, description="Total de resultados por página"),
     service: VagaService = Depends(get_vagas_service),
 ):
     try:
-        vagas = await service.pesquisar(q)
+        vagas = await service.pesquisar(q, salario_minimo=sm, salario_maximo=sx, page=page, total=total)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-
+    
     return [
-        VagaResponse(id=v.id, nome=v.nome, sobrenome=v.sobrenome)
-        for v in vagas
-    ]
+        VagaResponse(vagas=[
+            VagaResponseItem(id=v.id, 
+                        empresa=v.empresa, 
+                        nome=v.nome, 
+                        stack=v.stack, 
+                        localizacao_cidade=v.localizacao_cidade, 
+                        localizacao_estado=v.localizacao_estado, 
+                        nivel=v.nivel, 
+                        modalidade=v.modalidade, 
+                        salario=v.salario)
+            for v in vagas[0]
+        ], total=vagas[1])
+    ]       

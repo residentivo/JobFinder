@@ -9,11 +9,11 @@ class Settings(BaseSettings):
     
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    env: str = os.getenv("ENV", "dev")                             # dev | prod
+    env: str = os.getenv("ENV", "dev")                            
     public_base_url: str = os.getenv("PUBLIC_BASE_URL", "http://localhost:8000")
-    host: str = os.getenv("HOST", "127.0.0.1")                       # interno (Caddy fala com isso)
+    host: str = os.getenv("HOST", "127.0.0.1")                    
     port: int = int(os.getenv("PORT", 8000))
-    secret_key: str = os.getenv("SECRET_KEY", "your-secret-key")    # lido do .env (SECRET_KEY)
+    secret_key: str = os.getenv("SECRET_KEY", "your-secret-key")  
 
     @property
     def is_prod(self) -> bool:
@@ -21,7 +21,6 @@ class Settings(BaseSettings):
 
     @property
     def cookie_secure(self) -> bool:
-        # Cookies Secure só em prod (HTTPS real via Caddy)
         return self.is_prod
     
 settings = Settings()

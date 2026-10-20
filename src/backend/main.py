@@ -6,7 +6,6 @@ from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from starlette.middleware.sessions import  SessionMiddleware
 
-from api.middleware.token import auth
 from api.routes import vagas_router
 from config import settings
     
@@ -21,9 +20,10 @@ from infrastructure.repositories.elastic_vaga_repository import (
     ElasticVagaRepository,
 )
 
+from elasticsearch import Elasticsearch
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: cria o cliente Elasticsearch
     basic_auth = None
     if settings.elastic_user:
         basic_auth = (settings.elastic_user, settings.elastic_password)
@@ -38,7 +38,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    # Shutdown: fecha conexões
     await client.close()
 
 app = FastAPI(title="API Busca Vagas", lifespan=lifespan)
@@ -51,7 +50,7 @@ async def healthy_simple():
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.public_base_url+":"+str(settings.port)],
+    allow_origins=[settings.public_base_url+":"+str(settings.port), "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -66,10 +65,7 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1
 # Sessões (cookies assinados)
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
-protected_router = APIRouter(dependencies=[Depends(auth)])
-
 app.include_router(public_router)
-app.include_router(protected_router)
 
 app.include_router(vagas_router)    
 
@@ -79,7 +75,7 @@ if __name__ == "__main__":
         host= f"{settings.host}",
         port= f"{settings.port}",
         reload=not  f"{settings.is_prod}",
-        proxy_headers=True,                       # confia em X-Forwarded-*
+        proxy_headers=True,
         forwarded_allow_ips="127.0.0.1",
     )
     

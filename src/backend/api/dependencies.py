@@ -1,4 +1,3 @@
-# api/dependencies.py
 from fastapi import Depends, Request
 
 from application.services.vaga_service import VagaService,   VagaService, VagaService

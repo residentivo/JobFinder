@@ -14,12 +14,12 @@ PUBLIC_PATHS = {
 
 }
 
-@app.middleware("https")
+@app.middleware("http")
 async def log(request: Request, call_next):
     # Log de entrada
     logger.info(f"→ {request.method} {request.url.path}")
     start = time.perf_counter()
-   
+
     response = await call_next(request)
     response.headers["X-Process-Time"] = f"{time.perf_counter() - start:.4f}"
 

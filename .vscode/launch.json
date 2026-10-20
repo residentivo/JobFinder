@@ -10,11 +10,20 @@
             "request": "launch",
             "module": "uvicorn",
             "args": ["main:app", "--host", "127.0.0.1", "--port", "8000"],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}\\src\\backend",
             "env": { "PYTHONPATH": "${workspaceFolder}\\src\\backend" },
             "jinja": true,
             "console": "integratedTerminal"
-        }
-       
+        },
+        {
+            "name": "Incrementa ElasticSearch",            
+            "request": "launch",                        
+            "cwd": "${workspaceFolder}\\src\\backend",
+            "env": { "PYTHONPATH": "${workspaceFolder}\\src\\backend" },            
+            "type": "debugpy",            
+            "program": "${workspaceFolder}\\src\\backend\\inicializa_elastic.py", 
+            "console": "integratedTerminal",            
+            "justMyCode": true
+        }       
     ]
 }
