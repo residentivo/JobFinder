@@ -49,6 +49,8 @@ class ElasticVagaRepository(VagaRepository):
             
         palavras = ["stack", "nivel", "modalidade", "salario", "localizacao"]
         if sort in palavras:        
+            if sort == "localizacao":
+                sort = "localizacao_cidade"
             query["sort"] = [{sort: {"order": order}}]
         
         if salario_minimo is not None or salario_maximo is not None:
